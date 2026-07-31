@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    HOME PAGE
+    <br>
+
+    
+    <a href="{% url 'logout' %}">logout</a>
+    <a href="{% url 'form' %}">Add student details</a>
+    <br>
+
+    {% for i in data %}
+    name: {{i.name}}<br/>
+    age :{{i.age}}<br>
+    <a href="{% url 'delete' i.id %}">delete</a><br>
+    <a href="{% url 'edit' i.id  %}">edit</a><br>
+    {% endfor %}
+
+</body>
+</html>

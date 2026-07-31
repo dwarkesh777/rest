@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<form action="" method="post">
+    <!-- Django automatically replaces this with a hidden secure input field -->
+    {% csrf_token %}
+
+    <label for="name">Full Name:</label>
+    <input type="text" id="name" name="name" value="{{ data.name }}" required>
+
+    <label for="enroll">Enrollment Number:</label>
+    <input type="text" id="enroll" name="enrollment" value="{{ data.enrollment }}" required>
+
+    <label for="roll">Roll Number:</label>
+    <input type="number" id="roll" name="roll" value="{{ data.roll }}" required>
+
+    <label for="dob">Date of Birth:</label>
+    <input type="date" id="dob" name="dob" value="{{ data.dob|date:'Y-m-d' }}" required>
+
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" value="{{ data.title }}" required>
+
+    <button type="submit">Submit Form</button>
+</form>
+
+
+</body>
+</html>

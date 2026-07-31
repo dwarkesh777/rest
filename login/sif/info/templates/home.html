@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    SIF
+    <a href="{% url 'l' %}">logout</a>
+    <a href="{% url 'form' %}">Add student</a>
+    {% for i in data %}
+        <p>{{ i.name }} - {{ i.enrollment }} - {{ i.roll }} - {{ i.dob }} - {{ i.title }}</p>
+        <a href="{% url 'update' i.id %}">Edit</a>
+        <a href="{% url 'delete' i.id %}">delete</a>
+    {% endfor %}
+    
+</body>
+
+</html>
