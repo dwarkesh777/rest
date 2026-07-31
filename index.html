@@ -1,0 +1,1197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PYTHON2 Programs</title>
+    <meta name="description" content="Browse and search the dwarkesh777/PYTHON2 GitHub repository">
+    <style>
+      :root {
+        --bg: #0d1117;
+        --bg-elev: linear-gradient(180deg,#161b22 0%, #0d1117 100%);
+        --panel: rgba(22,27,34,0.85);
+        --panel-2: rgba(255,255,255,0.03);
+        --text: #e6edf3;
+        --muted: #8b949e;
+        --accent: #58a6ff;
+        --accent-2: #79c0ff;
+        --accent-gradient: linear-gradient(90deg,#58a6ff,#79c0ff);
+        --danger: #ff7b72;
+        --border: rgba(48,54,61,0.8);
+        --shadow: 0 8px 32px rgba(1,4,9,0.8);
+        --glass: rgba(255,255,255,0.02);
+        --scrollbar-track: rgba(255,255,255,0.02);
+        --scrollbar-thumb: rgba(88,166,255,0.15);
+        --copied-color: #7ee787;
+        --mobile-header-height: 58px;
+
+        /* VS Code–style syntax colors (matching your screenshots) */
+        --tok-keyword:   #c792ea;   /* purple  – const, var, let, if, return … */
+        --tok-string:    #c3e88d;   /* lime    – string literals */
+        --tok-number:    #f78c6c;   /* coral   – numeric literals */
+        --tok-builtin:   #ffcb6b;   /* amber   – print, require, len … */
+        --tok-comment:   #637777;   /* teal-grey – comments */
+        --tok-decorator: #c792ea;   /* purple  – decorators */
+        --tok-defname:   #82aaff;   /* sky blue – function names */
+        --tok-classname: #ffcb6b;   /* amber   – class names */
+      }
+
+      html, body { height: 100%; background: var(--bg); }
+
+      * { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
+      ::-webkit-scrollbar { width: 8px; height: 8px; }
+      ::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 999px; }
+      ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+      ::-webkit-scrollbar-thumb:hover { background: rgba(88,166,255,0.25); }
+
+      body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        background: var(--bg);
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body.home {
+        background:
+          radial-gradient(ellipse 900px 500px at 5% 5%, rgba(88,166,255,0.05) 0%, transparent 60%),
+          radial-gradient(ellipse 700px 400px at 90% 15%, rgba(121,192,255,0.04), transparent 50%),
+          var(--bg-elev);
+        background-attachment: fixed;
+      }
+
+      body.home .app { grid-template-columns: 1fr; grid-template-areas: "main"; height: 100vh; overflow: hidden; }
+      body.home header, body.home aside.sidebar, body.home .crumbs { display: none; }
+      body.home main.content { padding: 0; height: 100vh; overflow: hidden; }
+      body.home #panel { background: transparent; border: none; box-shadow: none; height: 100%; overflow: hidden; }
+
+      .app {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        grid-template-columns: 260px 1fr;
+        grid-template-areas: "header header" "sidebar main";
+        height: 100dvh;
+        transition: opacity .2s ease;
+      }
+
+      body.preinit .app { opacity: 0; pointer-events: none; }
+
+      /* ── Header ── */
+      header {
+        grid-area: header;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 16px;
+        background: rgba(13,17,23,0.95);
+        border-bottom: 1px solid var(--border);
+        backdrop-filter: blur(8px);
+        transition: transform 220ms cubic-bezier(.2,.8,.2,1);
+        z-index: 50;
+      }
+
+      .brand .title {
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: 0.3px;
+      }
+      .brand .title a { color: var(--text); text-decoration: none; }
+      .brand .title a:hover { color: var(--accent); }
+
+      .search {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        max-width: 860px;
+        margin-left: auto;
+        position: relative;
+      }
+      .search input[type="search"] {
+        width: 100%;
+        padding: 9px 38px 9px 36px;
+        background: rgba(255,255,255,0.04);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        outline: none;
+        font-size: 14px;
+        transition: border-color .15s, box-shadow .15s;
+      }
+      .search input[type="search"]:focus { border-color: rgba(88,166,255,0.5); box-shadow: 0 0 0 3px rgba(88,166,255,0.1); }
+      input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+      .clearBtn {
+        position: absolute; right: 10px; top: 50%;
+        transform: translateY(-50%);
+        background: transparent; border: none;
+        padding: 4px; border-radius: 6px; cursor: pointer; display: none;
+      }
+      .clearBtn:hover { background: rgba(88,166,255,0.08); }
+      .clearBtn img { width: 15px; height: 15px; opacity: 0.7; }
+      .search .icon { position: absolute; left: 10px; pointer-events: none; color: var(--muted); display: inline-flex; }
+
+      /* ── Sidebar ── */
+      aside.sidebar {
+        grid-area: sidebar;
+        background: rgba(13,17,23,0.6);
+        border-right: 1px solid var(--border);
+        overflow: auto;
+      }
+      .sidebar .section {
+        padding: 14px 14px 6px 14px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .sidebar .section.clickable { cursor: pointer; transition: color .15s; }
+      .sidebar .section.clickable:hover { color: var(--accent); }
+
+      .tree { list-style: none; margin: 0; padding: 4px 8px 18px 8px; }
+      .tree li {
+        display: flex; align-items: center; gap: 8px;
+        border-radius: 8px; margin: 2px 0; padding: 7px 10px;
+        cursor: pointer; color: var(--text); font-size: 13.5px;
+        transition: background .1s;
+      }
+      .tree li:hover { background: rgba(88,166,255,0.06); }
+      .tree li.active { background: rgba(88,166,255,0.14); border: 1px solid rgba(88,166,255,0.35); color: var(--accent-2); }
+      .tree .icon { width: 16px; height: 16px; display: inline-flex; align-items: center; flex-shrink: 0; }
+      .tree .icon img { width: 16px; height: 16px; object-fit: contain; }
+
+      /* ── Main ── */
+      main.content { grid-area: main; padding: 16px 20px 28px 20px; overflow: auto; }
+
+      .crumbs {
+        display: flex; flex-wrap: wrap; align-items: center;
+        gap: 4px; margin-bottom: 12px; font-size: 13px; color: var(--muted);
+      }
+      .crumbs a { color: var(--accent); text-decoration: none; }
+      .crumbs a:hover { text-decoration: underline; }
+
+      /* ── Panel / Card ── */
+      .panel {
+        background: rgba(22,27,34,0.6);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+      }
+
+      /* ── Folder listing ── */
+      .tree.folder-list { padding: 8px; }
+      .tree.folder-list li { font-size: 14px; padding: 9px 12px; }
+
+      /* ── File viewer ── */
+      .viewer {
+        padding: 16px 18px;
+        line-height: 1.65;
+        color: #abb2bf;
+        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+        position: relative;
+        background: #0d1117;
+        border-radius: 10px;
+        max-height: calc(100dvh - 170px);
+        overflow-y: auto;
+        font-size: 13.5px;
+      }
+
+      .viewer .toolbar {
+        position: absolute;
+        top: 16px;
+        right: 18px;
+        display: flex;
+        gap: 8px;
+        z-index: 10;
+      }
+
+      .viewer .copy-btn {
+        padding: 7px 13px;
+        background: #161b22;
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        cursor: pointer;
+        display: inline-flex; align-items: center; gap: 6px;
+        font-size: 13px; line-height: 1;
+        transition: background .12s, border-color .12s;
+      }
+      .viewer .copy-btn:hover {
+        background: #30363d;
+        border-color: #8b949e;
+      }
+      .viewer .copy-btn:active {
+        transform: translateY(1px);
+        background: #282e38;
+      }
+      .viewer .copy-btn:disabled {
+        opacity: 0.4;
+        cursor: default;
+      }
+
+      .viewer .btn {
+        padding: 7px 13px;
+        background: rgba(88,166,255,0.1);
+        color: #e6edf3;
+        border: 1px solid rgba(88,166,255,0.2);
+        border-radius: 8px;
+        cursor: pointer;
+        display: inline-flex; align-items: center; gap: 6px;
+        font-size: 13px; line-height: 1;
+        transition: background .12s, transform .1s;
+      }
+      .viewer .btn:hover { background: rgba(88,166,255,0.18); }
+      .viewer .btn:active { transform: translateY(1px); }
+      .viewer .btn:disabled { opacity: 0.4; cursor: default; }
+
+      .viewer .navRow {
+        display: flex; justify-content: flex-end;
+        align-items: center; gap: 8px; margin-top: 16px;
+      }
+
+      .viewer .btnSmall {
+        padding: 5px 10px;
+        background: rgba(255,255,255,0.03);
+        color: var(--muted);
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        cursor: pointer;
+        display: inline-flex; align-items: center; gap: 6px;
+        font-size: 12px; line-height: 1;
+        text-decoration: none;
+        transition: background .12s, color .12s;
+        margin-top: 12px;
+      }
+      .viewer .btnSmall:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+
+      .viewer .btnContainer { display: flex; justify-content: flex-start; }
+
+      /* ── Code block ── */
+      .viewer .codeblock { display: block; }
+      .viewer .code-line {
+        display: grid;
+        grid-template-columns: minmax(2ch, 4ch) 1fr;
+        gap: 14px; align-items: start;
+        border-radius: 3px;
+      }
+      .viewer .code-line:hover { background: rgba(255,255,255,0.02); }
+      .viewer .ln { color: #4d5566; text-align: right; user-select: none; font-size: 12.5px; padding-top: 1px; }
+      .viewer .code { white-space: pre-wrap; word-break: break-word; }
+
+      /* VS Code–matching syntax colors */
+      .tok-keyword   { color: var(--tok-keyword); }
+      .tok-string    { color: var(--tok-string); }
+      .tok-number    { color: var(--tok-number); }
+      .tok-builtin   { color: var(--tok-builtin); }
+      .tok-comment   { color: var(--tok-comment); font-style: italic; }
+      .tok-decorator { color: var(--tok-decorator); }
+      .tok-defname   { color: var(--tok-defname); }
+      .tok-classname { color: var(--tok-classname); }
+
+      .viewer .note {
+        color: var(--muted); margin-bottom: 10px; font-size: 20px; font-family: Inter, sans-serif;
+      }
+
+      /* Problem statement */
+      .viewer .problem-statement {
+        background: rgba(88,166,255,0.06);
+        border: 1px solid rgba(88,166,255,0.18);
+        border-left: 3px solid var(--accent);
+        border-radius: 8px;
+        padding: 14px 16px;
+        margin-bottom: 18px;
+        line-height: 1.75;
+        color: #cdd9e5;
+        white-space: pre-wrap;
+        font-family: Inter, sans-serif;
+        font-size: 14px;
+      }
+      .viewer .problem-statement-title {
+        color: var(--accent-2);
+        font-weight: 700;
+        font-size: 11px;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-family: Inter, sans-serif;
+      }
+
+      /* Output */
+      .viewer .output-section {
+        background: rgba(126,231,135,0.05);
+        border: 1px solid rgba(126,231,135,0.15);
+        border-left: 3px solid #7ee787;
+        border-radius: 8px;
+        padding: 14px 16px;
+        margin-top: 18px;
+        color: #cdd9e5;
+        white-space: pre-wrap;
+        font-size: 13.5px;
+      }
+      .viewer .output-title {
+        color: #7ee787;
+        font-weight: 700;
+        font-size: 11px;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-family: Inter, sans-serif;
+      }
+
+      /* ── PDF viewer ── */
+      .pdf-viewer-wrap {
+        width: 100%;
+        height: calc(100dvh - 170px);
+        border-radius: 10px;
+        overflow: hidden;
+        background: #1a1d23;
+        display: flex;
+        flex-direction: column;
+      }
+      .pdf-viewer-wrap .pdf-toolbar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        background: rgba(13,17,23,0.9);
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+      }
+      .pdf-viewer-wrap embed,
+      .pdf-viewer-wrap iframe {
+        flex: 1;
+        width: 100%;
+        border: none;
+      }
+
+      /* ── Search results ── */
+      .results { padding: 6px 8px 16px 8px; }
+      .results .hit {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin: 6px 0;
+        background: rgba(255,255,255,0.02);
+        transition: background .1s, border-color .1s;
+        cursor: pointer;
+      }
+      .results .hit:hover { background: rgba(88,166,255,0.04); border-color: rgba(88,166,255,0.2); }
+      .results .hit .path { color: var(--accent); font-size: 13.5px; }
+      .results .hit .snippet { color: var(--muted); margin-top: 4px; font-size: 12.5px; font-family: ui-monospace, monospace; }
+
+      .progressRow { display: flex; align-items: center; gap: 10px; color: var(--muted); padding: 8px 0 12px 0; font-size: 13px; }
+      .progressBar { flex: 1; height: 4px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; }
+      .progressFill { height: 100%; width: 0%; background: linear-gradient(90deg, #58a6ff, #79c0ff); border-radius: 999px; transition: width .12s linear; }
+
+      .hl { background: rgba(88,166,255,0.15); border-radius: 3px; padding: 0 2px; color: #fff; }
+      .empty { color: var(--muted); padding: 12px; font-size: 14px; }
+      .kbd { display: inline-block; padding: 2px 7px; border-radius: 5px; border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--muted); font-size: 12px; }
+
+      /* ── Download All ── */
+      .downloadAllWrap { margin-top: 16px; display: none; text-align: right; }
+      .downloadAllBtn {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 8px 16px; border-radius: 999px; border: 1px solid rgba(88,166,255,0.25);
+        background: rgba(88,166,255,0.1); color: var(--accent-2);
+        cursor: pointer; text-decoration: none; font-size: 13px; font-weight: 500;
+        transition: background .12s, transform .1s;
+      }
+      .downloadAllBtn:hover { background: rgba(88,166,255,0.18); transform: translateY(-1px); }
+
+      /* ── Home ── */
+      .homeWrap { display: grid; place-items: center; height: 100vh; padding: 24px; }
+      .homeCard {
+        width: min(860px, 94vw);
+        padding: 32px 28px;
+        border-radius: 18px;
+        background: rgba(22,27,34,0.92);
+        border: 1px solid rgba(48,54,61,0.9);
+        box-shadow: 0 20px 60px rgba(1,4,9,0.7);
+        backdrop-filter: blur(12px);
+      }
+
+      .homeTitle {
+        margin: 0 0 8px 0;
+        font-weight: 800;
+        font-size: 26px;
+        letter-spacing: -0.3px;
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .homeSubtitle { margin: 0 0 22px 0; color: var(--muted); font-size: 14px; }
+
+      .homeSearchRow { position: relative; margin-top: 8px; }
+      .homeSearchRow input[type="search"] {
+        width: 100%;
+        padding: 16px 18px 16px 50px;
+        background: rgba(255,255,255,0.04);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        outline: none;
+        font-size: 16px;
+        box-sizing: border-box;
+        transition: border-color .2s, box-shadow .2s;
+      }
+      .homeSearchRow input[type="search"]:focus {
+        border-color: rgba(88,166,255,0.6);
+        box-shadow: 0 0 0 4px rgba(88,166,255,0.1);
+      }
+      .homeSearchRow .icon {
+        position: absolute; left: 16px; top: 50%;
+        transform: translateY(-50%); pointer-events: none;
+        color: var(--muted); display: inline-flex;
+      }
+      .homeSearchRow .clearBtn { right: 14px; }
+
+      .homeActions { display: flex; gap: 12px; margin-top: 14px; }
+
+      .btnPrimary {
+        padding: 13px 18px;
+        background: rgba(88,166,255,0.15);
+        color: var(--accent-2);
+        border: 1px solid rgba(88,166,255,0.3);
+        border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 14px; flex: 1;
+        transition: background .12s;
+      }
+      .btnPrimary:hover { background: rgba(88,166,255,0.25); }
+
+      .btnSearch {
+        width: 100%; margin-top: 12px;
+        padding: 14px 18px;
+        background: linear-gradient(135deg, #1f6feb, #388bfd);
+        color: #fff;
+        border: none;
+        border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 15px;
+        letter-spacing: 0.2px;
+        transition: filter .12s, transform .1s;
+        box-shadow: 0 4px 16px rgba(31,111,235,0.35);
+      }
+      .btnSearch:hover { filter: brightness(1.1); transform: translateY(-1px); }
+      .btnSearch:active { transform: translateY(0); }
+
+      .homeDivider { display: flex; align-items: center; margin: 18px 0; gap: 12px; }
+      .homeDivider::before, .homeDivider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+      .homeDivider .or { color: var(--muted); font-size: 13px; }
+
+      .btnGithub {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 10px 16px; background: transparent;
+        color: var(--text); border: 1px solid var(--border);
+        border-radius: 10px; cursor: pointer; text-decoration: none; font-weight: 600; font-size: 14px;
+        transition: background .12s, border-color .12s;
+      }
+      .btnGithub:hover { background: rgba(255,255,255,0.04); border-color: rgba(88,166,255,0.3); }
+
+      .fabGithubWrap { position: fixed; right: 20px; bottom: 20px; z-index: 60; }
+      .fabGithub {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 44px; height: 44px; padding: 8px; border-radius: 999px;
+        background: rgba(255,255,255,0.04); color: #fff;
+        text-decoration: none; border: 1px solid rgba(255,255,255,0.08);
+        transition: transform .12s, background .12s;
+      }
+      .fabGithub:hover { transform: translateY(-2px); background: rgba(255,255,255,0.08); }
+
+      @media (max-width: 980px) {
+        .app { grid-template-columns: 1fr; grid-template-areas: "header" "main"; }
+        aside.sidebar { display: none; }
+        main.content { padding: 8px 10px 24px 10px; padding-top: var(--mobile-header-height); }
+        header { position: fixed; top: 0; left: 0; right: 0; z-index: 80; }
+        .viewer { padding: 10px; max-height: calc(100dvh - var(--mobile-header-height) - 36px); font-size: 12px; }
+        .viewer .toolbar { top: 10px; right: 10px; }
+        .pdf-viewer-wrap { height: calc(100dvh - var(--mobile-header-height) - 60px); }
+        .code-line { font-size: 11px; }
+        .crumbs { margin-top: 14px; }
+      }
+
+      @media (max-width: 860px) {
+        .homeActions { flex-direction: column; }
+        .homeCard { padding: 20px 16px; }
+        .homeTitle { font-size: 22px; }
+        .homeSearchRow input[type="search"] { font-size: 15px; padding: 14px 16px 14px 46px; }
+      }
+    </style>
+  </head>
+  <body class="preinit">
+    <div class="app">
+      <header>
+        <div class="brand">
+          <div class="title">
+            <a href="https://github.com/dwarkesh777/PYTHON2/">PYTHON2 Progs</a>
+          </div>
+        </div>
+        <form class="search" id="searchForm">
+          <span class="icon" aria-hidden="true">
+            <img src="https://raw.githubusercontent.com/PiyushJT/PiyushJT/a9d7747e25350a58f5bff349735fba8d43a573b5/search.svg" alt="" style="width:15px;height:15px;opacity:.7;"/>
+          </span>
+          <input id="searchInput" type="search" placeholder="Code, Problem, File…" autocomplete="off" />
+          <button type="button" class="clearBtn" id="searchClearBtn" aria-label="Clear search">
+            <img src="https://raw.githubusercontent.com/PiyushJT/PiyushJT/190350a5e5b727ddc0cd3557e2d7029305bf5994/icons/cross.svg" alt="X" style="width:16px;height:16px;"/>
+          </button>
+        </form>
+      </header>
+
+      <aside class="sidebar">
+        <div class="section" id="sidebarSection">Folders</div>
+        <ul class="tree" id="rootTree"></ul>
+      </aside>
+
+      <main class="content">
+        <nav class="crumbs" id="breadcrumbs"></nav>
+        <section class="panel" id="panel">
+          <div id="panelInner"></div>
+        </section>
+        <div class="downloadAllWrap" id="downloadAllWrap"></div>
+      </main>
+    </div>
+
+    <script>
+      const OWNER = "dwarkesh777";
+      const REPO  = "PYTHON2";
+      const TICK_ICON_URL = "https://raw.githubusercontent.com/PiyushJT/PiyushJT/main/icons/tick.svg";
+
+      const state = {
+        defaultBranch: "main",
+        treeByPath: new Map(),
+        nodeByPath: new Map(),
+        contentCache: new Map(),
+        fileIndex: [],
+        programIndex: [],
+        searchAbort: null,
+        prefetchStarted: false
+      };
+
+      function $(id) { return document.getElementById(id); }
+
+      function toQuery(params) {
+        const usp = new URLSearchParams();
+        Object.entries(params).forEach(([k,v]) => { if (v !== undefined && v !== null && v !== "") usp.set(k,v); });
+        return `?${usp.toString()}`;
+      }
+
+      function parseLocation() {
+        const usp = new URLSearchParams(location.search);
+        return { view: usp.get("view") || "home", path: usp.get("p") || "", q: usp.get("q") || "" };
+      }
+
+      function navigate(newState, replace=false) {
+        const url = `${location.pathname}${toQuery(newState)}`;
+        if (replace) history.replaceState(null,"",url); else history.pushState(null,"",url);
+        render();
+      }
+
+      async function fetchJSON(url,init) {
+        const res = await fetch(url,init);
+        if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+        return res.json();
+      }
+
+      async function init() {
+        const meta = await fetchJSON(`https://api.github.com/repos/${OWNER}/${REPO}`);
+        state.defaultBranch = meta.default_branch || "main";
+        const rootTree = await fetchJSON(`https://api.github.com/repos/${OWNER}/${REPO}/git/trees/${encodeURIComponent(state.defaultBranch)}`);
+        const allEntries = await loadAllEntriesRecursively(rootTree.tree,"");
+        buildIndexesFromEntries(allEntries);
+        const {view,path} = parseLocation();
+        renderSidebar(view,path);
+        render(true);
+        if (!state.prefetchStarted) { state.prefetchStarted=true; prefetchSmallFiles().catch(()=>{}); }
+        document.body.classList.remove('preinit');
+      }
+
+      async function loadAllEntriesRecursively(entries, parentPath) {
+        const allEntries=[], treeEntries=[];
+        for (const entry of entries) {
+          const fullPath = parentPath ? `${parentPath}/${entry.path}` : entry.path;
+          const e = {...entry, path:fullPath};
+          allEntries.push(e);
+          if (entry.type==="tree") treeEntries.push(e);
+        }
+        if (!treeEntries.length) return allEntries;
+        const concurrency=5;
+        for (let i=0; i<treeEntries.length; i+=concurrency) {
+          const batch = treeEntries.slice(i,i+concurrency);
+          const results = await Promise.all(batch.map(async dir => {
+            try {
+              const t = await fetchJSON(`https://api.github.com/repos/${OWNER}/${REPO}/git/trees/${dir.sha}`);
+              return loadAllEntriesRecursively(t.tree, dir.path);
+            } catch(e) { return []; }
+          }));
+          results.flat().forEach(e=>allEntries.push(e));
+        }
+        return allEntries;
+      }
+
+      function buildIndexesFromEntries(allEntries) {
+        const root = {type:"tree",name:"",path:"",children:new Map()};
+        state.nodeByPath.set("",root);
+        for (const entry of allEntries) {
+          const parts = entry.path.split("/");
+          let cursor = root;
+          for (let i=0;i<parts.length;i++) {
+            const name=parts[i], isLast=i===parts.length-1;
+            const childPath=parts.slice(0,i+1).join("/");
+            if (!cursor.children.has(name)) {
+              const node = {
+                type: isLast?(entry.type==="tree"?"tree":"blob"):"tree",
+                name, path:childPath, children:new Map(),
+                sha: isLast?entry.sha:undefined
+              };
+              cursor.children.set(name,node);
+              state.nodeByPath.set(childPath,node);
+            }
+            cursor=cursor.children.get(name);
+          }
+        }
+        state.treeByPath=state.nodeByPath;
+        const files=Array.from(state.nodeByPath.values()).filter(n=>n.type==="blob");
+        state.fileIndex = files.sort((a,b)=>a.path.localeCompare(b.path));
+        state.programIndex = state.fileIndex.filter(f=>/\.py$/i.test(f.path));
+      }
+
+      function iconForPath(path, isDir) {
+        if (isDir) return "https://raw.githubusercontent.com/PiyushJT/PiyushJT/1cadac55bb62a80e9bfdc6cc8fb9eefce1d7eee4/icons/folder.svg";
+        const ext=(path.split('.').pop()||'').toLowerCase();
+        const map={
+          'py':'https://raw.githubusercontent.com/PiyushJT/PiyushJT/00ca33b80496d6ca543332f53b314e62ddf3e37b/icons/python.svg',
+          'java':'https://raw.githubusercontent.com/PiyushJT/PiyushJT/00ca33b80496d6ca543332f53b314e62ddf3e37b/icons/java.svg',
+          'txt':'https://raw.githubusercontent.com/PiyushJT/PiyushJT/00ca33b80496d6ca543332f53b314e62ddf3e37b/icons/txt.svg',
+          'csv':'https://raw.githubusercontent.com/PiyushJT/PiyushJT/00ca33b80496d6ca543332f53b314e62ddf3e37b/icons/csv.svg',
+          'pdf':'https://raw.githubusercontent.com/PiyushJT/PiyushJT/00ca33b80496d6ca543332f53b314e62ddf3e37b/icons/file.svg',
+          'js':'https://raw.githubusercontent.com/PiyushJT/PiyushJT/00ca33b80496d6ca543332f53b314e62ddf3e37b/icons/file.svg',
+        };
+        return map[ext]||'https://raw.githubusercontent.com/PiyushJT/PiyushJT/00ca33b80496d6ca543332f53b314e62ddf3e37b/icons/file.svg';
+      }
+
+      function getParentPath(path) {
+        if (!path) return "";
+        const parts=path.split("/"); parts.pop(); return parts.join("/");
+      }
+
+      function renderSidebar(view,path) {
+        const ul=$("rootTree"); if(!ul) return;
+        const sectionDiv=$("sidebarSection");
+        let dirPath="", highlightPath="";
+        if (view==="browse"||view==="file") {
+          const node=state.nodeByPath.get(path||"");
+          if (node) {
+            if (node.type==="tree") { dirPath=getParentPath(node.path)||""; highlightPath=node.path; }
+            else { dirPath=getParentPath(node.path)||""; highlightPath=node.path; }
+          }
+        }
+        if (sectionDiv) {
+          const old=sectionDiv._clickHandler;
+          if (old) sectionDiv.removeEventListener("click",old);
+          if (dirPath) {
+            const parts=dirPath.split("/");
+            sectionDiv.textContent=parts[parts.length-1]||dirPath;
+            sectionDiv.classList.add("clickable");
+            const h=()=>navigate({view:"browse",p:dirPath});
+            sectionDiv.addEventListener("click",h);
+            sectionDiv._clickHandler=h;
+          } else {
+            sectionDiv.textContent="Folders";
+            sectionDiv.classList.remove("clickable");
+            sectionDiv._clickHandler=null;
+          }
+        }
+        const dirNode=state.nodeByPath.get(dirPath)||state.nodeByPath.get("");
+        ul.innerHTML="";
+        let children=Array.from(dirNode.children.values());
+        if (!dirPath) children=children.filter(n=>n.type==="tree");
+        children=children.sort((a,b)=>a.name.localeCompare(b.name));
+        for (const item of children) {
+          const li=document.createElement("li");
+          li.innerHTML=`<span class="icon"><img src="${iconForPath(item.path,item.type==="tree")}" alt=""/></span><span>${item.name}</span>`;
+          if (highlightPath&&item.path===highlightPath) li.classList.add("active");
+          li.addEventListener("click",()=>navigate({view:item.type==="tree"?"browse":"file",p:item.path}));
+          ul.appendChild(li);
+        }
+      }
+
+      function renderDownloadAll(view) {
+        const wrap=$("downloadAllWrap"); if(!wrap) return;
+        if (view==="home") { wrap.style.display="none"; wrap.innerHTML=""; return; }
+        const branch=state.defaultBranch||"main";
+        const zipUrl=`https://github.com/${OWNER}/${REPO}/archive/refs/heads/${encodeURIComponent(branch)}.zip`;
+        wrap.style.display="block";
+        wrap.innerHTML=`<a href="${zipUrl}" class="downloadAllBtn">
+          <span>Download all codes (ZIP)</span>
+          <span><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a1 1 0 0 1 1 1v9.086l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4A1 1 0 0 1 8.707 10.793L11 13.086V4a1 1 0 0 1 1-1z"/><path d="M5 18a1 1 0 0 0 0 2h14a1 1 0 1 0 0-2H5z"/></svg></span>
+        </a>`;
+      }
+
+      function render(replacing=false) {
+        const {view,path,q}=parseLocation();
+        document.body.classList.toggle('home',view==='home');
+        renderSidebar(view,path);
+        renderDownloadAll(view);
+        renderBreadcrumbs(view,path,q);
+        const panelInner=$("panelInner");
+        if (view==="home") renderHome(panelInner);
+        else if (view==="browse") renderFolder(path,panelInner);
+        else if (view==="file") renderFile(path,panelInner);
+        else if (view==="search") renderSearch(q,panelInner);
+        else renderHome(panelInner);
+      }
+
+      function renderBreadcrumbs(view,path,q) {
+        const bc=$("breadcrumbs"); bc.innerHTML="";
+        const add=(label,st)=>{
+          const a=document.createElement("a");
+          a.href="javascript:void(0)"; a.textContent=label;
+          a.addEventListener("click",()=>navigate(st)); bc.appendChild(a);
+        };
+        if (view!=='home') add("Repo",{view:"browse",p:""});
+        if (view==="search") { const s=document.createElement("span"); s.textContent=` / Search: ${q}`; bc.appendChild(s); return; }
+        const parts=path?path.split("/"):[];
+        let acc="";
+        for (let i=0;i<parts.length;i++) {
+          acc=i===0?parts[0]:`${acc}/${parts[i]}`;
+          const isLast=i===parts.length-1;
+          if (!isLast||view==="browse") add(` / ${parts[i]}`,{view:"browse",p:acc});
+          else add(` / ${parts[i]}`,{view:"file",p:acc});
+        }
+      }
+
+      function renderHome(container) {
+        const wrap=document.createElement('div'); wrap.className='homeWrap';
+        const card=document.createElement('div'); card.className='homeCard';
+
+        card.innerHTML=`
+          <h1 class="homeTitle">PYTHON2 Programs</h1>
+          <p class="homeSubtitle">Search problems, files, and code across the repository</p>
+          <div class="homeSearchRow" id="homeSearchRow">
+            <span class="icon" aria-hidden="true">
+              <img src="https://raw.githubusercontent.com/PiyushJT/PiyushJT/a9d7747e25350a58f5bff349735fba8d43a573b5/search.svg" alt="" style="width:20px;height:20px;opacity:.7;" />
+            </span>
+            <input id="homeSearchInput" type="search" placeholder="Search code, problems, files…" autocomplete="off" />
+            <button type="button" class="clearBtn" id="homeClearBtn" aria-label="Clear search">
+              <img src="https://raw.githubusercontent.com/PiyushJT/PiyushJT/190350a5e5b727ddc0cd3557e2d7029305bf5994/icons/cross.svg" alt="X" style="width:18px;height:18px;" />
+            </button>
+          </div>
+          <button type="button" class="btnSearch" id="searchBtn">Search</button>
+          <div class="homeDivider"><span class="or">OR</span></div>
+          <div class="homeActions">
+            <button type="button" class="btnPrimary" id="navigateBtn">Navigate Manually</button>
+            <a class="btnGithub" href="https://github.com/${OWNER}/${REPO}" target="_blank" rel="noopener noreferrer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12.02c0 5.09 3.29 9.4 7.86 10.93.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.35-1.3-1.7-1.3-1.7-1.06-.73.08-.72.08-.72 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.74 1.27 3.4.98.11-.75.41-1.26.75-1.55-2.55-.29-5.23-1.28-5.23-5.71 0-1.26.45-2.29 1.2-3.09-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 2.9-.39c.99 0 1.99.13 2.92.39 2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.77.12 3.06.75.8 1.2 1.83 1.2 3.09 0 4.44-2.69 5.41-5.25 5.69.42.37.8 1.1.8 2.22 0 1.6-.01 2.88-.01 3.27 0 .31.21.68.8.56A10.53 10.53 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+              GitHub
+            </a>
+          </div>
+        `;
+        wrap.appendChild(card);
+        container.innerHTML='';
+        container.appendChild(wrap);
+
+        const homeInput=document.getElementById('homeSearchInput');
+        const homeClear=document.getElementById('homeClearBtn');
+        if (homeInput&&homeClear) {
+          ['input','change','focus','blur'].forEach(ev=>homeInput.addEventListener(ev,()=>toggleClear(homeClear,homeInput)));
+          homeClear.addEventListener('click',()=>{homeInput.value='';homeInput.focus();toggleClear(homeClear,homeInput);});
+          toggleClear(homeClear,homeInput);
+          homeInput.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();const q=homeInput.value.trim();if(q)navigate({view:'search',q});}});
+        }
+        document.getElementById('navigateBtn').addEventListener('click',()=>navigate({view:'browse',p:''}));
+        document.getElementById('searchBtn').addEventListener('click',()=>{
+          const q=document.getElementById('homeSearchInput').value.trim();
+          if(q) navigate({view:'search',q});
+        });
+      }
+
+      function renderFolder(path, container) {
+        const node=state.nodeByPath.get(path||"");
+        if (!node||node.type!=="tree") { navigate({view:"browse",p:""},true); return; }
+        const entries=Array.from(node.children.values());
+        const folders=entries.filter(e=>e.type==="tree").sort((a,b)=>a.name.localeCompare(b.name));
+        const files=entries.filter(e=>e.type==="blob").sort((a,b)=>a.name.localeCompare(b.name));
+        const showFiles=path!=="";
+        const list=document.createElement("ul"); list.className="tree folder-list";
+        const addItem=(item,isDir)=>{
+          const li=document.createElement("li");
+          li.innerHTML=`<span class="icon"><img src="${iconForPath(item.path,isDir)}" alt=""/></span><span>${item.name}</span>`;
+          li.addEventListener("click",()=>navigate({view:isDir?"browse":"file",p:item.path}));
+          list.appendChild(li);
+        };
+        folders.forEach(f=>addItem(f,true));
+        if (showFiles) files.forEach(f=>addItem(f,false));
+        container.innerHTML="";
+        container.appendChild(list);
+      }
+
+      async function renderFile(path, container) {
+        const node=state.nodeByPath.get(path);
+        if (!node||node.type!=="blob") { navigate({view:"browse",p:""},true); return; }
+
+        // ── PDF files: render with embedded viewer ──────────────────────────────
+        if (/\.pdf$/i.test(path)) {
+          renderPdf(path, container);
+          return;
+        }
+
+        const key=`${state.defaultBranch}:${path}`;
+        let fileName=path.split('/').pop().split('.').slice(0,-1).join('.');
+        if (fileName.length>12) fileName=fileName.slice(0,12)+'…';
+
+        let content=state.contentCache.get(key);
+        if (!content) {
+          const url=`https://raw.githubusercontent.com/${OWNER}/${REPO}/${encodeURIComponent(state.defaultBranch)}/${encodeURI(path)}`;
+          const res=await fetch(url);
+          if (!res.ok) { container.innerHTML=`<div class="viewer"><div class="note">Unable to fetch file.</div></div>`; return; }
+          content=await res.text();
+          state.contentCache.set(key,content);
+        }
+
+        const viewer=document.createElement("div"); viewer.className="viewer";
+        viewer.innerHTML=`<div class="note">${fileName}</div>`;
+
+        // Prev / Next
+        const indexSource=(state.programIndex&&state.programIndex.length>0)?state.programIndex:state.fileIndex;
+        const currentIndex=indexSource.findIndex(f=>f.path===path);
+        const prevPath=currentIndex>0?indexSource[currentIndex-1].path:null;
+        const nextPath=currentIndex<indexSource.length-1?indexSource[currentIndex+1].path:null;
+
+        // Toolbar
+        const toolbar=document.createElement("div"); toolbar.className="toolbar";
+        const copyBtn=document.createElement("button");
+        copyBtn.className="copy-btn"; copyBtn.type="button";
+        copyBtn.innerHTML=`<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg><span>Copy</span>`;
+
+        const isPy=/\.py$/i.test(path);
+        let parsedContent=null, codeContent=content;
+        if (isPy) { parsedContent=parsePythonFile(content); codeContent=parsedContent.code; }
+
+        copyBtn.addEventListener("click",async()=>{
+          if (copyBtn.__lock) return; copyBtn.__lock=true;
+          const orig=copyBtn.innerHTML;
+          try {
+            await navigator.clipboard.writeText(codeContent);
+            copyBtn.innerHTML=`<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg><span style="color:var(--copied-color)">Copied!</span>`;
+            copyBtn.disabled=true;
+            setTimeout(()=>{ copyBtn.innerHTML=orig; copyBtn.disabled=false; copyBtn.__lock=false; },2000);
+          } catch(_) { copyBtn.textContent="Failed"; copyBtn.__lock=false; }
+        });
+        toolbar.appendChild(copyBtn);
+        viewer.appendChild(toolbar);
+
+        if (isPy&&parsedContent?.problemStatement) {
+          const d=document.createElement("div"); d.className="problem-statement";
+          d.innerHTML=`<div class="problem-statement-title">Problem Statement</div><div>${escapeHtml(parsedContent.problemStatement)}</div>`;
+          viewer.appendChild(d);
+        }
+
+        const codeBlock=document.createElement("div"); codeBlock.className="codeblock";
+        const lines=isPy?highlightPythonLines(codeContent):(highlightJsLines(codeContent));
+        for (let i=0;i<lines.length;i++) {
+          const row=document.createElement("div"); row.className="code-line";
+          const ln=document.createElement("span"); ln.className="ln"; ln.textContent=String(i+1);
+          const code=document.createElement("span"); code.className="code";
+          code.innerHTML=lines[i]===""?"&nbsp;":lines[i];
+          row.appendChild(ln); row.appendChild(code); codeBlock.appendChild(row);
+        }
+        viewer.appendChild(codeBlock);
+
+        if (isPy&&parsedContent?.output) {
+          const d=document.createElement("div"); d.className="output-section";
+          d.innerHTML=`<div class="output-title">Output</div><div>${escapeHtml(parsedContent.output)}</div>`;
+          viewer.appendChild(d);
+        }
+
+        // Nav row
+        const navRow=document.createElement("div"); navRow.className="navRow";
+        const mkNav=(label,icon,targetPath)=>{
+          const b=document.createElement("button"); b.className="btn"; b.type="button";
+          b.innerHTML=icon; b.disabled=!targetPath;
+          if (targetPath) b.addEventListener("click",()=>navigate({view:"file",p:targetPath},true));
+          return b;
+        };
+        navRow.appendChild(mkNav("Prev",`<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 4.5a1 1 0 0 0-1.42 0l-6 6a1 1 0 0 0 0 1.42l6 6a1 1 0 0 0 1.42-1.42L10.91 12l4.59-4.59A1 1 0 0 0 15.5 4.5z"/></svg><span>Prev</span>`,prevPath));
+        navRow.appendChild(mkNav("Next",`<span>Next</span><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M8.5 4.5a1 1 0 0 1 1.42 0l6 6a1 1 0 0 1 0 1.42l-6 6a1 1 0 1 1-1.42-1.42L13.09 12 8.5 7.41A1 1 0 0 1 8.5 4.5z"/></svg>`,nextPath));
+        viewer.appendChild(navRow);
+
+        const bCont=document.createElement("div"); bCont.className="btnContainer";
+        const ghLink=document.createElement("a"); ghLink.className="btnSmall";
+        ghLink.href=`https://github.com/${OWNER}/${REPO}`; ghLink.target="_blank"; ghLink.rel="noopener noreferrer";
+        ghLink.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12.02c0 5.09 3.29 9.4 7.86 10.93.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.35-1.3-1.7-1.3-1.7-1.06-.73.08-.72.08-.72 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.74 1.27 3.4.98.11-.75.41-1.26.75-1.55-2.55-.29-5.23-1.28-5.23-5.71 0-1.26.45-2.29 1.2-3.09-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 2.9-.39c.99 0 1.99.13 2.92.39 2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.77.12 3.06.75.8 1.2 1.83 1.2 3.09 0 4.44-2.69 5.41-5.25 5.69.42.37.8 1.1.8 2.22 0 1.6-.01 2.88-.01 3.27 0 .31.21.68.8.56A10.53 10.53 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg><span>Contribute or correct the code</span>`;
+        bCont.appendChild(ghLink);
+        viewer.appendChild(bCont);
+        container.innerHTML=""; container.appendChild(viewer);
+      }
+
+      /* ── PDF renderer ── */
+      function renderPdf(path, container) {
+        const rawUrl = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${encodeURIComponent(state.defaultBranch)}/${encodeURI(path)}`;
+        // Use Google Docs viewer so it works across all browsers without downloading
+        const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(rawUrl)}&embedded=true`;
+        const fileName = path.split('/').pop();
+
+        const wrap = document.createElement('div'); wrap.className = 'pdf-viewer-wrap';
+        wrap.innerHTML = `
+          <div class="pdf-toolbar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#ff7b72" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+            <span style="color:var(--text);font-size:13px;font-weight:500;font-family:Inter,sans-serif;">${fileName}</span>
+            <a href="${rawUrl}" download="${fileName}" target="_blank" rel="noopener noreferrer"
+               style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:7px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--accent);text-decoration:none;font-size:12px;font-family:Inter,sans-serif;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a1 1 0 0 1 1 1v9.086l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4A1 1 0 0 1 8.707 10.793L11 13.086V4a1 1 0 0 1 1-1z"/><path d="M5 18a1 1 0 0 0 0 2h14a1 1 0 1 0 0-2H5z"/></svg>
+              Download PDF
+            </a>
+          </div>
+          <iframe src="${viewerUrl}" title="${fileName}" allowfullscreen loading="lazy"></iframe>
+        `;
+        container.innerHTML = '';
+        container.appendChild(wrap);
+      }
+
+      function escapeHtml(s) {
+        return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+      }
+
+      function parsePythonFile(content) {
+        const lines=content.split('\n');
+        let inDocstring=false, docstringType=null, docstringStart=-1, docstringContent=[];
+        const docstrings=[];
+        for (let i=0;i<lines.length;i++) {
+          const line=lines[i];
+          if (!inDocstring) {
+            const td=line.indexOf('"""'), ts=line.indexOf("'''");
+            const quote = (td!==-1&&(ts===-1||td<ts)) ? '"""' : (ts!==-1 ? "'''" : null);
+            if (quote) {
+              const afterStart=line.substring(line.indexOf(quote)+3);
+              if (afterStart.includes(quote)) {
+                docstrings.push({start:i,end:i,content:afterStart.substring(0,afterStart.indexOf(quote))});
+              } else { inDocstring=true; docstringType=quote; docstringStart=i; docstringContent=[afterStart]; }
+            }
+          } else {
+            const endIdx=line.indexOf(docstringType);
+            if (endIdx!==-1) {
+              docstringContent.push(line.substring(0,endIdx));
+              docstrings.push({start:docstringStart,end:i,content:docstringContent.join('\n')});
+              inDocstring=false; docstringContent=[];
+            } else docstringContent.push(line);
+          }
+        }
+        const ps=docstrings.length>0?docstrings[0].content.trim():null;
+        const out=docstrings.length>1?docstrings[docstrings.length-1].content.trim():null;
+        const excludedRanges=[];
+        if (ps&&docstrings.length>0) excludedRanges.push({start:docstrings[0].start,end:docstrings[0].end});
+        if (out&&docstrings.length>1) excludedRanges.push({start:docstrings[docstrings.length-1].start,end:docstrings[docstrings.length-1].end});
+        let codeLines=lines.filter((_,i)=>!excludedRanges.some(r=>i>=r.start&&i<=r.end));
+        while(codeLines.length>0&&codeLines[0].trim()==='') codeLines.shift();
+        while(codeLines.length>0&&codeLines[codeLines.length-1].trim()==='') codeLines.pop();
+        return {problemStatement:ps, code:codeLines.join('\n'), output:out};
+      }
+
+      function highlightPythonLines(text) {
+        let src=escapeHtml(text);
+        const ph=[]; const put=html=>{const id=`@@T${ph.length}@@`;ph.push(html);return id;};
+        src=src.replace(/((?:"""|''')[\s\S]*?(?:"""|'''|$))/g,m=>put(`<span class="tok-string">${m}</span>`));
+        src=src.replace(/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'/g,m=>put(`<span class="tok-string">${m}</span>`));
+        src=src.replace(/(^|\s)(#.*?$)/gm,(_,p1,p2)=>`${p1}${put(`<span class="tok-comment">${p2}</span>`)}`);
+        src=src.replace(/(^|\s)(@[_A-Za-z][_\w\.]*)/gm,(_,p1,p2)=>`${p1}${put(`<span class="tok-decorator">${p2}</span>`)}`);
+        const kws=['False','None','True','and','as','assert','async','await','break','class','continue','def','del','elif','else','except','finally','for','from','global','if','import','in','is','lambda','nonlocal','not','or','pass','raise','return','try','while','with','yield'];
+        src=src.replace(new RegExp(`\\b(${kws.join('|')})\\b`,'g'),'<span class="tok-keyword">$1</span>');
+        const bis=['print','range','len','str','int','float','list','dict','set','tuple','bool','enumerate','zip','map','filter','sum','min','max','open','input','type','super','hasattr','getattr','setattr','isinstance'];
+        src=src.replace(new RegExp(`\\b(${bis.join('|')})\\b`,'g'),'<span class="tok-builtin">$1</span>');
+        src=src.replace(/\b(0x[0-9a-fA-F]+|\d+(?:\.\d+)?(?:e[+-]?\d+)?)\b/g,'<span class="tok-number">$1</span>');
+        src=src.replace(/\b(def)(\s+)([_A-Za-z][_\w]*)/g,(_,kw,sp,n)=>`<span class="tok-keyword">${kw}</span>${sp}<span class="tok-defname">${n}</span>`);
+        src=src.replace(/\b(class)(\s+)([_A-Za-z][_\w]*)/g,(_,kw,sp,n)=>`<span class="tok-keyword">${kw}</span>${sp}<span class="tok-classname">${n}</span>`);
+        src=src.replace(/@@T(\d+)@@/g,(_,i)=>ph[Number(i)]||'');
+        return src.split('\n');
+      }
+
+      /* JS/generic syntax highlighting matching VS Code dark+ theme */
+      function highlightJsLines(text) {
+        let src=escapeHtml(text);
+        const ph=[]; const put=html=>{const id=`@@T${ph.length}@@`;ph.push(html);return id;};
+        // Template literals
+        src=src.replace(/`(?:[^`\\]|\\.)*`/g,m=>put(`<span class="tok-string">${m}</span>`));
+        // Strings
+        src=src.replace(/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'/g,m=>put(`<span class="tok-string">${m}</span>`));
+        // Comments
+        src=src.replace(/(\/\/.*?$)/gm,m=>put(`<span class="tok-comment">${m}</span>`));
+        src=src.replace(/(\/\*[\s\S]*?\*\/)/g,m=>put(`<span class="tok-comment">${m}</span>`));
+        // Keywords (VS Code purple)
+        const kws=['const','let','var','function','return','if','else','for','while','do','switch','case','break','continue','new','delete','typeof','instanceof','in','of','try','catch','finally','throw','class','extends','import','export','default','async','await','static','this','super','yield','from','null','undefined','true','false'];
+        src=src.replace(new RegExp(`\\b(${kws.join('|')})\\b`,'g'),'<span class="tok-keyword">$1</span>');
+        // Built-ins / common globals (amber)
+        const bis=['console','require','module','exports','process','Math','JSON','Promise','setTimeout','setInterval','clearTimeout','clearInterval','Object','Array','String','Number','Boolean','Error','fetch'];
+        src=src.replace(new RegExp(`\\b(${bis.join('|')})\\b`,'g'),'<span class="tok-builtin">$1</span>');
+        // Numbers
+        src=src.replace(/\b(0x[0-9a-fA-F]+|\d+(?:\.\d+)?(?:e[+-]?\d+)?)\b/g,'<span class="tok-number">$1</span>');
+        // Function declarations
+        src=src.replace(/\b(function)(\s+)([_A-Za-z$][_\w$]*)/g,(_,kw,sp,n)=>`<span class="tok-keyword">${kw}</span>${sp}<span class="tok-defname">${n}</span>`);
+        // Arrow / assigned functions: identifiers before =>
+        src=src.replace(/\b([_A-Za-z$][_\w$]*)(\s*)(=\s*(?:async\s*)?\()/g,(_,n,sp,rest)=>`<span class="tok-defname">${n}</span>${sp}${rest}`);
+        src=src.replace(/@@T(\d+)@@/g,(_,i)=>ph[Number(i)]||'');
+        return src.split('\n');
+      }
+
+      function cancelSearch() {
+        if (state.searchAbort) { state.searchAbort.aborted=true; state.searchAbort=null; }
+      }
+
+      function highlight(text,q) {
+        if (!q) return text;
+        return text.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"gi"),m=>`<span class="hl">${m}</span>`);
+      }
+
+      function getBasename(p) {
+        if (!p) return p; return p.split('/').pop();
+      }
+
+      function appendResultItem({kind,path,snippet},q,listEl) {
+        const hit=document.createElement("div"); hit.className="hit";
+        hit.innerHTML=`<div class="path">${highlight(path,q)}</div>${snippet?`<div class="snippet">… ${highlight(snippet,q)} …</div>`:""}`;
+        hit.addEventListener('click',()=>navigate({view:kind==='folder'?'browse':'file',p:path}));
+        listEl.appendChild(hit);
+      }
+
+      async function renderSearch(query,container) {
+        cancelSearch();
+        const guard={aborted:false}; state.searchAbort=guard;
+        const q=(query||"").trim();
+        if (!q) { container.innerHTML=`<div class="empty">Type a query and press Enter. Try <span class="kbd">express</span> or <span class="kbd">def</span>.</div>`; return; }
+        const shell=document.createElement("div"); shell.className="results";
+        const list=document.createElement('div');
+        const progressRow=document.createElement('div'); progressRow.className='progressRow';
+        progressRow.innerHTML=`<div class="progressBar"><div class="progressFill" id="searchProgress"></div></div><span>Scanning files…</span>`;
+        const progressFill=progressRow.querySelector('#searchProgress');
+        shell.appendChild(progressRow); shell.appendChild(list);
+        container.innerHTML=""; container.appendChild(shell);
+        const lower=q.toLowerCase();
+        Array.from(state.nodeByPath.values()).filter(n=>n.type==='tree'&&n.path!==''&&(n.name||getBasename(n.path)).toLowerCase().includes(lower))
+          .sort((a,b)=>a.path.localeCompare(b.path)).forEach(f=>appendResultItem({kind:'folder',path:f.path,snippet:''},q,list));
+        const nameMatches=state.fileIndex.filter(f=>getBasename(f.path).toLowerCase().includes(lower));
+        nameMatches.forEach(f=>appendResultItem({kind:'file',path:f.path,snippet:''},q,list));
+        const remaining=state.fileIndex.filter(f=>!nameMatches.includes(f));
+        let inFlight=0,index=0,foundAny=false;
+        const maxContentBytes=200*1024, concurrency=6;
+        const queueNext=async()=>{
+          if (guard.aborted) return;
+          if (index>=remaining.length) {
+            if (!inFlight) { if (!foundAny&&list.children.length===0) { const n=document.createElement('div'); n.className='empty'; n.textContent='No matches.'; list.appendChild(n); } progressRow.remove(); }
+            return;
+          }
+          const file=remaining[index++]; inFlight++;
+          try {
+            const key=`${state.defaultBranch}:${file.path}`;
+            let text=state.contentCache.get(key);
+            if (!text) {
+              const url=`https://raw.githubusercontent.com/${OWNER}/${REPO}/${encodeURIComponent(state.defaultBranch)}/${encodeURI(file.path)}`;
+              const res=await fetch(url);
+              if (res.ok) {
+                const reader=res.body.getReader(), chunks=[]; let received=0;
+                while(true){const{done,value}=await reader.read();if(done)break;chunks.push(value);received+=value.byteLength;if(received>maxContentBytes)break;}
+                text=new TextDecoder("utf-8").decode(concatUint8(chunks));
+                state.contentCache.set(key,text);
+              }
+            }
+            if (text&&text.toLowerCase().includes(lower)) {
+              foundAny=true;
+              const idx=text.toLowerCase().indexOf(lower);
+              const snippet=text.slice(Math.max(0,idx-40),Math.min(text.length,idx+q.length+40)).replace(/</g,"&lt;");
+              appendResultItem({kind:'file',path:file.path,snippet},q,list);
+            }
+          } catch(e){}
+          finally {
+            inFlight--;
+            const pct=remaining.length>0?Math.max(0,Math.min(100,Math.round(((Math.min(index,remaining.length)-inFlight)/remaining.length)*100))):100;
+            if(progressFill) progressFill.style.width=pct+'%';
+            queueNext();
+          }
+        };
+        for(let i=0;i<concurrency&&i<remaining.length;i++) queueNext();
+        if(remaining.length===0) progressRow.remove();
+      }
+
+      function concatUint8(chunks) {
+        const total=chunks.reduce((s,c)=>s+c.byteLength,0), out=new Uint8Array(total); let off=0;
+        for(const c of chunks){out.set(c,off);off+=c.byteLength;} return out;
+      }
+
+      async function prefetchSmallFiles() {
+        const candidates=state.fileIndex.filter(f=>!/\.pdf$/i.test(f.path)).slice(0,60);
+        let index=0;
+        const step=async()=>{
+          if(index>=candidates.length) return;
+          const file=candidates[index++];
+          try {
+            const key=`${state.defaultBranch}:${file.path}`;
+            if(!state.contentCache.has(key)){
+              const res=await fetch(`https://raw.githubusercontent.com/${OWNER}/${REPO}/${encodeURIComponent(state.defaultBranch)}/${encodeURI(file.path)}`);
+              if(res.ok){const t=await res.text();state.contentCache.set(key,t);}
+            }
+          } catch(e){}
+          step();
+        };
+        for(let i=0;i<4&&i<candidates.length;i++) step();
+      }
+
+      function toggleClear(btn,input) { if(!btn||!input) return; btn.style.display=input.value?'inline-flex':'none'; }
+
+      $("searchForm").addEventListener("submit",e=>{e.preventDefault();navigate({view:"search",q:$("searchInput").value.trim()});});
+      const headerInput=$('searchInput'), headerClear=$('searchClearBtn');
+      if(headerInput&&headerClear){
+        ['input','change','focus','blur'].forEach(ev=>headerInput.addEventListener(ev,()=>toggleClear(headerClear,headerInput)));
+        headerClear.addEventListener('click',()=>{headerInput.value='';headerInput.focus();toggleClear(headerClear,headerInput);});
+        toggleClear(headerClear,headerInput);
+      }
+
+      window.addEventListener("popstate",()=>render());
+      document.addEventListener("DOMContentLoaded",()=>{
+        init().catch(err=>{$("panelInner").innerHTML=`<div class="empty">Failed to load repository.</div>`;console.error(err);document.body.classList.remove('preinit');});
+      });
+    </script>
+
+    <!-- Floating GitHub FAB (home only) -->
+    <script>
+      (function(){
+        try {
+          const wrap=document.createElement('div'); wrap.className='fabGithubWrap'; wrap.style.display='none';
+          const a=document.createElement('a'); a.className='fabGithub';
+          a.href=`https://github.com/dwarkesh777/PYTHON2`; a.target='_blank'; a.rel='noopener noreferrer';
+          a.setAttribute('aria-label','View or contribute on GitHub');
+          a.innerHTML=`<svg width="38" height="38" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12.02c0 5.09 3.29 9.4 7.86 10.93.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.35-1.3-1.7-1.3-1.7-1.06-.73.08-.72.08-.72 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.74 1.27 3.4.98.11-.75.41-1.26.75-1.55-2.55-.29-5.23-1.28-5.23-5.71 0-1.26.45-2.29 1.2-3.09-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 2.9-.39c.99 0 1.99.13 2.92.39 2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.77.12 3.06.75.8 1.2 1.83 1.2 3.09 0 4.44-2.69 5.41-5.25 5.69.42.37.8 1.1.8 2.22 0 1.6-.01 2.88-.01 3.27 0 .31.21.68.8.56A10.53 10.53 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>`;
+          wrap.appendChild(a); document.body.appendChild(wrap);
+          const toggle=()=>{wrap.style.display=document.body.classList.contains('home')?'':'none';};
+          toggle();
+          new MutationObserver(toggle).observe(document.body,{attributes:true,attributeFilter:['class']});
+        } catch(e){}
+      })();
+    </script>
+
+    <!-- Auto-hiding header on mobile scroll -->
+    <script>
+      (function(){
+        const header=document.querySelector("header"); if(!header) return;
+        const mq=window.matchMedia("(max-width: 980px)");
+        let scroller=null,lastY=0,ticking=false,bound=null;
+        const getY=el=>(!el||el===window||el===document.documentElement)?window.scrollY||document.documentElement.scrollTop||0:typeof el.scrollTop==="number"?el.scrollTop:window.scrollY||0;
+        function attach(){
+          if(scroller&&bound){try{scroller.removeEventListener("scroll",bound,{passive:true});}catch(e){}try{window.removeEventListener("scroll",bound,{passive:true});}catch(e){}}
+          scroller=mq.matches?document.querySelector("main.content")||document.scrollingElement||document.documentElement:document.scrollingElement||document.documentElement;
+          lastY=getY(scroller);
+          bound=()=>{if(!ticking){window.requestAnimationFrame(update);ticking=true;}};
+          if(scroller===window||scroller===document.scrollingElement||scroller===document.documentElement)window.addEventListener("scroll",bound,{passive:true});
+          else{scroller.addEventListener("scroll",bound,{passive:true});window.addEventListener("scroll",bound,{passive:true});}
+        }
+        function update(){
+          const cur=getY(scroller),delta=cur-lastY;
+          if(!mq.matches){header.style.transform="translateY(0)";}
+          else if(cur<=5){header.style.transform="translateY(0)";}
+          else if(delta>5&&cur>60){header.style.transform="translateY(-100%)";}
+          else if(delta<-5){header.style.transform="translateY(0)";}
+          lastY=cur;ticking=false;
+        }
+        attach();
+        const onChange=()=>{attach();if(!mq.matches)header.style.transform="translateY(0)";};
+        if(typeof mq.addEventListener==="function")mq.addEventListener("change",onChange);else if(typeof mq.addListener==="function")mq.addListener(onChange);
+        window.addEventListener("orientationchange",()=>setTimeout(attach,120));
+        window.addEventListener("resize",()=>setTimeout(attach,120));
+      })();
+    </script>
+  </body>
+</html>
